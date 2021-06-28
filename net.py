@@ -11,9 +11,12 @@ import os
 from PIL import Image
 import numpy as np
 # для конфигурации gpu
-from tensorflow.compat.v1 import ConfigProto 
-from tensorflow.compat.v1 import InteractiveSession
+# tensorflow.compat.v1 import ConfigProto
+# from tensorflow.compat.v1 import InteractiveSession
 # настраиваем работу с GPU, для CPU эта часть не нужна
+from tensorflow.core.protobuf.config_pb2 import ConfigProto
+from tensorflow.python.client.session import InteractiveSession
+
 config = ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.7
 config.gpu_options.allow_growth = True
@@ -36,7 +39,7 @@ def read_image_files(files_max_count,dir_name):
   files_count = files_max_count
   if(files_max_count>len(files)): # определяем количество файлов не больше max
     files_count = len(files)
-  image_box = [[]]*files_coun
+  image_box = [[]]*files_count
   for file_i in range(files_count): # читаем изображения в список
     image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
   return files_count, image_box
@@ -56,5 +59,5 @@ def getresult(image_box):
 # заранее вызываем работу сети, так как работа с gpu требует времени
 # из-за инициализации библиотек
 # возможно, лучше убрать и закомментировать эти строки
-fcount, fimage = read_image_files(1,'./static')
-decode = getresult(fimage)
+#fcount, fimage = read_image_files(1,'./static')
+#decode = getresult(fimage)
